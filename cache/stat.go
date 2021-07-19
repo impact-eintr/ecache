@@ -6,14 +6,14 @@ type Stat struct {
 	ValueSize int64 `json:"valuesize"`
 }
 
-func (s *Stat) add(k string, v []byte) {
+func (s *Stat) Add(k string, v []byte) {
 	s.Count += 1
 	s.KeySize += int64(len(k))
 	s.ValueSize += int64(len(v))
 
 }
 
-func (s *Stat) del(k string, v []byte) {
+func (s *Stat) Remove(k string, v []byte) {
 	s.Count -= 1
 	s.KeySize -= int64(len(k))
 	s.ValueSize -= int64(len(v))

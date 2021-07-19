@@ -17,7 +17,7 @@ func TestTCP(t *testing.T) {
 	vlen := strconv.Itoa(len(value))
 	test := "S" + klen + " " + vlen + " " + key + value
 
-	serverAddr := fmt.Sprintf("127.0.0.1:%d", 7895)
+	serverAddr := fmt.Sprintf("127.0.0.1:%d", 6430)
 	tcpAddr, err := net.ResolveTCPAddr("tcp", serverAddr)
 	if err != nil {
 		log.Fatalln(err)

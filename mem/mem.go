@@ -1,8 +1,10 @@
-package cache
+package mem
 
 import (
 	"sync"
 	"time"
+
+	"github.com/impact-eintr/ecache/cache"
 )
 
 type value struct {
@@ -13,7 +15,7 @@ type value struct {
 type memCache struct {
 	c     map[string]value
 	mutex sync.RWMutex
-	Stat
+	cache.Stat
 	ttl time.Duration
 }
 
@@ -23,11 +25,11 @@ func (mc *memCache) Set(k string, v []byte) error {
 
 	tmp, exist := mc.c[k]
 	if exist {
-		mc.del(k, tmp.v)
+		mc.Remove(k, tmp.v)
 	}
 
 	mc.c[k] = value{v, time.Now()}
-	mc.add(k, v)
+	mc.Add(k, v)
 	return nil
 
 }
@@ -55,22 +57,22 @@ func (mc *memCache) Del(k string) error {
 	v, exist := mc.c[k]
 	if exist {
 		delete(mc.c, k)
-		mc.del(k, v.v) //修改状态
+		mc.Remove(k, v.v) //修改状态
 	}
 	return nil
 
 }
 
-func (mc *memCache) GetStat() Stat {
+func (mc *memCache) GetStat() cache.Stat {
 	return mc.Stat
 
 }
 
-func newMemCache(ttl int) *memCache {
+func NewCache(ttl int) *memCache {
 	mc := &memCache{
 		make(map[string]value),
 		sync.RWMutex{},
-		Stat{},
+		cache.Stat{},
 		time.Duration(ttl) * time.Second}
 
 	if ttl > 0 {

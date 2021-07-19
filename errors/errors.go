@@ -4,8 +4,7 @@ type errCode int
 
 type ErrMsg struct {
 	Code errCode     `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"date"`
+	Msg  interface{} `json:"msg"`
 }
 
 const (
@@ -26,10 +25,17 @@ var codeMap = map[errCode]string{
 	CodeKeyDelFaild: "未成功删除key",
 }
 
-func NewerrMsg(code errCode, data interface{}) *ErrMsg {
-	return &ErrMsg{
-		Code: code,
-		Msg:  codeMap[code],
-		Data: data,
+func NewerrMsg(code errCode, msg interface{}) *ErrMsg {
+	if code == CodeSuccess {
+		return &ErrMsg{
+			Code: CodeSuccess,
+			Msg:  msg,
+		}
+	} else {
+		return &ErrMsg{
+			Code: code,
+			Msg:  codeMap[code],
+		}
 	}
+
 }

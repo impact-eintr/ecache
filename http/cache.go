@@ -17,15 +17,19 @@ type cacheHandler struct {
 func (ch *cacheHandler) GetHandler(c *gin.Context) {
 	key := c.Param("key")
 	if len(key) == 0 {
-		c.JSON(http.StatusOK, errors.NewerrMsg(
+		c.JSON(http.StatusBadRequest, errors.NewerrMsg(
 			errors.CodeInvalidPath, nil))
+		return
 	}
 
 	b, err := ch.Get(key)
-	if err != nil {
-		log.Println(err)
-		c.JSON(http.StatusOK, errors.NewerrMsg(
+	if len(b) == 0 || err != nil {
+		if err != nil {
+			log.Println(err)
+		}
+		c.JSON(http.StatusNotFound, errors.NewerrMsg(
 			errors.CodeKeyNotFound, err))
+		return
 	}
 
 	c.JSON(http.StatusOK, errors.NewerrMsg(
@@ -36,8 +40,9 @@ func (ch *cacheHandler) GetHandler(c *gin.Context) {
 func (ch *cacheHandler) PutHandler(c *gin.Context) {
 	key := c.Param("key")
 	if len(key) == 0 {
-		c.JSON(http.StatusOK, errors.NewerrMsg(
+		c.JSON(http.StatusBadRequest, errors.NewerrMsg(
 			errors.CodeInvalidPath, nil))
+		return
 	}
 
 	b, _ := ioutil.ReadAll(c.Request.Body)
@@ -45,7 +50,7 @@ func (ch *cacheHandler) PutHandler(c *gin.Context) {
 		err := ch.Set(key, b)
 		if err != nil {
 			log.Println(err)
-			c.JSON(http.StatusOK, errors.NewerrMsg(
+			c.JSON(http.StatusInternalServerError, errors.NewerrMsg(
 				errors.CodeKeySetFaild, err))
 		}
 	}
@@ -55,13 +60,15 @@ func (ch *cacheHandler) PutHandler(c *gin.Context) {
 func (ch *cacheHandler) DelHandler(c *gin.Context) {
 	key := c.Param("key")
 	if len(key) == 0 {
-		c.JSON(http.StatusOK, errors.NewerrMsg(
+		c.JSON(http.StatusBadRequest, errors.NewerrMsg(
 			errors.CodeInvalidPath, nil))
+		return
 	}
+
 	err := ch.Del(key)
 	if err != nil {
 		log.Println(err)
-		c.JSON(http.StatusOK, errors.NewerrMsg(
+		c.JSON(http.StatusInternalServerError, errors.NewerrMsg(
 			errors.CodeKeyDelFaild, nil))
 	}
 

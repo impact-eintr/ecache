@@ -40,6 +40,7 @@ func (th *TcpHandler) process(conn net.Conn) {
 	}
 }
 
+// G3 AAA
 func (th *TcpHandler) get(ch chan chan *result, r *bufio.Reader) {
 	c := make(chan *result)
 	ch <- c
@@ -57,6 +58,7 @@ func (th *TcpHandler) get(ch chan chan *result, r *bufio.Reader) {
 
 }
 
+// S3 5 AAAaaaaa
 func (th *TcpHandler) set(ch chan chan *result, r *bufio.Reader) {
 	c := make(chan *result)
 	ch <- c
@@ -73,6 +75,7 @@ func (th *TcpHandler) set(ch chan chan *result, r *bufio.Reader) {
 
 }
 
+// D3 AAA
 func (th *TcpHandler) del(ch chan chan *result, r *bufio.Reader) {
 	c := make(chan *result)
 	ch <- c
