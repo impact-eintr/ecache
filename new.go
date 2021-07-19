@@ -4,22 +4,17 @@ import (
 	"log"
 
 	"github.com/impact-eintr/ecache/cache"
+	"github.com/impact-eintr/ecache/global"
 	"github.com/impact-eintr/ecache/mem"
 	"github.com/impact-eintr/ecache/rdb"
-)
-
-var (
-	CacheDir string = ""
-	TTL      int    = 0
-	TcpPort  string = "6430"
 )
 
 func New(typ string) (c cache.Cache) {
 
 	if typ == "mem" {
-		c = mem.NewCache(TTL)
+		c = mem.NewCache(global.TTL)
 	} else if typ == "disk" {
-		c = rdb.NewCache(CacheDir, TTL)
+		c = rdb.NewCache(global.CacheDir, global.TTL)
 	}
 
 	if c == nil {

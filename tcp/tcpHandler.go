@@ -4,8 +4,8 @@ import (
 	"log"
 	"net"
 
-	"github.com/impact-eintr/ecache"
 	"github.com/impact-eintr/ecache/cache"
+	"github.com/impact-eintr/ecache/global"
 )
 
 type TcpHandler struct {
@@ -13,7 +13,7 @@ type TcpHandler struct {
 }
 
 func (th *TcpHandler) Listen() {
-	l, err := net.Listen("tcp", "127.0.0.1:"+ecache.TcpPort)
+	l, err := net.Listen("tcp", "127.0.0.1:"+global.TcpPort)
 	if err != nil {
 		log.Fatalln(err)
 	}

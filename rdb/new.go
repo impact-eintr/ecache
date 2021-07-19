@@ -7,10 +7,14 @@ package rdb
 */
 import "C"
 import (
+	"log"
 	"runtime"
+	"time"
 )
 
 func NewCache(dir string, ttl int) *rocksdbCache {
+	log.Println(dir)
+	time.Sleep(time.Second)
 	options := C.rocksdb_options_create()
 	C.rocksdb_options_increase_parallelism(options, C.int(runtime.NumCPU()))
 	C.rocksdb_options_set_create_if_missing(options, 1)
