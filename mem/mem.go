@@ -1,7 +1,6 @@
 package mem
 
 import (
-	"log"
 	"sync"
 	"time"
 
@@ -23,12 +22,6 @@ type memCache struct {
 func (mc *memCache) Set(k string, v []byte) error {
 	mc.mutex.Lock()
 	defer mc.mutex.Unlock()
-
-	tmp, exist := mc.c[k]
-	if exist && len(tmp.v) > 0 {
-		mc.Remove(k, tmp.v)
-	}
-
 	mc.c[k] = value{v, time.Now()}
 	mc.Add(k, v)
 	return nil
@@ -56,7 +49,7 @@ func (mc *memCache) Del(k string) error {
 	mc.mutex.Lock()
 	defer mc.mutex.Unlock()
 	v, exist := mc.c[k]
-	if exist && len(v.v) > 0 {
+	if exist {
 		delete(mc.c, k)
 		mc.Remove(k, v.v) //修改状态
 	}
@@ -65,7 +58,6 @@ func (mc *memCache) Del(k string) error {
 }
 
 func (mc *memCache) GetStat() cache.Stat {
-	log.Println(mc.Stat)
 	return mc.Stat
 
 }
