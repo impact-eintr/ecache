@@ -32,7 +32,7 @@ func (mc *memCache) Get(k string) ([]byte, error) {
 	if mc.ttl != 0 {
 		mc.mutex.Lock()
 		val := mc.c[k].v
-		mc.c[k] = value{val, time.Now()} // 更新缓存
+		// mc.c[k] = value{val, time.Now()} // 更新缓存
 
 		defer mc.mutex.Unlock()
 		return val, nil

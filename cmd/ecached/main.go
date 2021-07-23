@@ -27,7 +27,7 @@ func main() {
 			pwd, _ := os.Getwd()
 			return path.Join(pwd, "storage")
 		}(), "磁盘缓存目录")
-	flag.IntVar(&global.TTL, "T", 0, "缓存生存时间 默认为0 即不失效 采用LRU算法")
+	flag.IntVar(&global.TTL, "T", 0, "缓存生存时间 默认为0 即不失效")
 
 	flag.Parse()
 
