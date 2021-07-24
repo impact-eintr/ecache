@@ -7,14 +7,26 @@ package rdb
 */
 import "C"
 import (
-	"log"
+	"os"
 	"runtime"
-	"time"
 )
 
+func exists(path string) bool {
+	_, err := os.Stat(path) //os.Stat获取文件信息
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		return false
+	}
+	return true
+}
+
 func NewCache(dir string, ttl int) *rocksdbCache {
-	log.Println(dir)
-	time.Sleep(time.Second)
+	if !exists(dir) {
+		os.Mkdir(dir, 0755)
+	}
+
 	options := C.rocksdb_options_create()
 	C.rocksdb_options_increase_parallelism(options, C.int(runtime.NumCPU()))
 	C.rocksdb_options_set_create_if_missing(options, 1)

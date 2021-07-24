@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"os"
 	"path"
 
 	"github.com/gin-gonic/gin"
@@ -24,9 +23,8 @@ func main() {
 
 	flag.StringVar(&global.CacheDir, "d",
 		func() string {
-			pwd, _ := os.Getwd()
-			return path.Join(pwd, "storage")
-		}(), "磁盘缓存目录")
+			return path.Join("/tmp", "ecached")
+		}(), "磁盘缓存目录 若使用磁盘服务 请务必指定")
 	flag.IntVar(&global.TTL, "T", 0, "缓存生存时间 默认为0 即不失效")
 
 	flag.Parse()
