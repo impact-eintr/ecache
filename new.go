@@ -6,6 +6,7 @@ import (
 	"github.com/impact-eintr/ecache/cache"
 	"github.com/impact-eintr/ecache/global"
 	"github.com/impact-eintr/ecache/mem"
+	"github.com/impact-eintr/ecache/minidb"
 	"github.com/impact-eintr/ecache/rdb"
 )
 
@@ -15,6 +16,8 @@ func New(typ string) (c cache.Cache) {
 		c = mem.NewCache(global.TTL)
 	} else if typ == "disk" {
 		c = rdb.NewCache(global.CacheDir, global.TTL)
+	} else if typ == "minidb" {
+		c = minidb.NewCache(global.CacheDir, global.TTL)
 	}
 
 	if c == nil {
